@@ -1,0 +1,37 @@
+bucket,path,name,rating,tags,math_hits,length
+easy,code_contests-4180,1144_A. Diverse Strings,800,implementation;strings,0,1987
+easy,code_contests-0240,188_D. Asterisks,1100,*special;implementation,0,952
+easy,code_contests-0050,615_A. Bulbs,800,implementation,0,1731
+easy,code_contests-0153,5_A. Chat Server's Outgoing Traffic,1000,implementation,0,2594
+easy,code_contests-1468,1008_A. Romaji,900,implementation;strings,0,1887
+easy,code_contests-11286,63_A. Sinking Ship,900,implementation;sortings;strings,0,2562
+easy,code_contests-5943,1095_A. Repeating Cipher,800,implementation,0,1688
+easy,code_contests-13052,595_A. Vitaly and Night,800,constructive algorithms;implementation,0,2647
+easy,code_contests-3455,1230_B. Ania and Minimizing,1000,greedy;implementation,0,1724
+easy,code_contests-10829,1119_A. Ilya and a Colorful Walk,1100,greedy;implementation,0,2490
+easy,code_contests-9521,681_A. A Good Contest,800,implementation,0,2565
+easy,code_contests-5651,1512_A. Spy Detected!,800,brute force;implementation,0,1555
+medium,code_contests-12612,1399_D. Binary String To Subsequences,1500,constructive algorithms;data structures;greedy;implementation,0,2279
+medium,code_contests-8386,907_C. Shockers,1600,implementation;strings,0,4057,yes
+medium,code_contests-11452,1054_C. Candies Distribution,1500,constructive algorithms;implementation,0,3784,no
+medium,code_contests-13048,496_B. Secret Combination,1500,brute force;constructive algorithms;implementation,0,1885,maybe
+medium,code_contests-9401,31_B. Sysadmin Bob,1500,greedy;implementation;strings,0,2127,yes
+medium,code_contests-9405,411_B. Multi-core Processor,1600,implementation,0,3006,no
+medium,code_contests-5573,740_A. Alyona and copybooks,1300,brute force;implementation,0,2143,no
+medium,code_contests-5786,858_D. Polycarp's phone book,1600,data structures;implementation;sortings,0,2247,maybe
+medium,code_contests-8854,1106_B. Lunar New Year and Food Ordering,1500,data structures;implementation,0,4698,no
+medium,code_contests-2350,748_B. Santa Claus and Keyboard Check,1500,implementation;strings,0,2438,maybe
+medium,code_contests-5976,440_B. Balancer,1600,greedy;implementation,0,1344,no
+medium,code_contests-5885,749_C. Voting,1500,greedy;implementation;two pointers,0,3227,maybe
+hard,code_contests-13043,37_B. Computer Game,1800,greedy;implementation,0,3157,yes
+hard,code_contests-4908,1172_A. Nauuo and Cards,1800,greedy;implementation,0,2573,no
+hard,code_contests-11581,200_C. Football Championship,1800,brute force;implementation,0,4801,yes
+hard,code_contests-5649,1463_C. Busy Robot,1800,implementation,0,3765,no
+hard,code_contests-9192,318_D. Ants,2000,brute force;implementation,0,2208,no
+hard,code_contests-3670,1365_F. Swaps Again,2100,constructive algorithms;implementation;sortings,0,2591,no
+hard,code_contests-5854,1418_D. Trash Problem,2100,data structures;implementation,0,4675,no
+hard,code_contests-3865,1095_E. Almost Regular Bracket Sequence,1900,implementation,0,1878,maybe
+hard,code_contests-6689,1508_A. Binary Literature,1900,constructive algorithms;greedy;implementation;strings;two pointers,0,2478,no
+hard,code_contests-0790,860_C. Tests Renumeration,2200,greedy;implementation,0,3403,maybe
+hard,code_contests-8896,669_D. Little Artem and Dance,1800,brute force;constructive algorithms;implementation,0,2731,no
+hard,code_contests-5768,43_D. Journey,2000,brute force;constructive algorithms;implementation,0,2959,no

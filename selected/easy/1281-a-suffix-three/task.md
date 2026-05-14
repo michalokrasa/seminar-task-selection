@@ -1,0 +1,87 @@
+# 1281_A. Suffix Three
+
+## Problem Description
+We just discovered a new data structure in our research group: a suffix three!
+
+It's very useful for natural language processing. Given three languages and three suffixes, a suffix three can determine which language a sentence is written in.
+
+It's super simple, 100% accurate, and doesn't involve advanced machine learning algorithms.
+
+Let us tell you how it works.
+
+  * If a sentence ends with "po" the language is Filipino. 
+  * If a sentence ends with "desu" or "masu" the language is Japanese. 
+  * If a sentence ends with "mnida" the language is Korean. 
+
+
+
+Given this, we need you to implement a suffix three that can differentiate Filipino, Japanese, and Korean.
+
+Oh, did I say three suffixes? I meant four.
+
+Input
+
+The first line of input contains a single integer t (1 ≤ t ≤ 30) denoting the number of test cases. The next lines contain descriptions of the test cases. 
+
+Each test case consists of a single line containing a single string denoting the sentence. Spaces are represented as underscores (the symbol "_") for ease of reading. The sentence has at least 1 and at most 1000 characters, and consists only of lowercase English letters and underscores. The sentence has no leading or trailing underscores and no two consecutive underscores. It is guaranteed that the sentence ends with one of the four suffixes mentioned above.
+
+Output
+
+For each test case, print a single line containing either "FILIPINO", "JAPANESE", or "KOREAN" (all in uppercase, without quotes), depending on the detected language.
+
+Example
+
+Input
+
+
+8
+kamusta_po
+genki_desu
+ohayou_gozaimasu
+annyeong_hashimnida
+hajime_no_ippo
+bensamu_no_sentou_houhou_ga_okama_kenpo
+ang_halaman_doon_ay_sarisari_singkamasu
+si_roy_mustang_ay_namamasu
+
+
+Output
+
+
+FILIPINO
+JAPANESE
+JAPANESE
+KOREAN
+FILIPINO
+FILIPINO
+JAPANESE
+JAPANESE
+
+Note
+
+The first sentence ends with "po", so it is written in Filipino.
+
+The second and third sentences end with "desu" and "masu", so they are written in Japanese.
+
+The fourth sentence ends with "mnida", so it is written in Korean.
+
+## Contest Information
+- **Contest ID**: 1281
+- **Problem Index**: A
+- **Points**: 500.0
+- **Rating**: 800
+- **Tags**: implementation
+- **Time Limit**: {'seconds': 1, 'nanos': 0} seconds
+- **Memory Limit**: 256000000 bytes
+
+## Task
+Solve this competitive programming problem. Write your Python solution to `/app/solution.py`.
+
+Your solution must:
+1. Read input from standard input (stdin)
+2. Write output to standard output (stdout)
+3. Handle all the given constraints and edge cases
+4. Be saved to `/app/solution.py`
+
+## Test Cases
+The solution will be validated against multiple test cases.

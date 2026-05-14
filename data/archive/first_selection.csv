@@ -1,0 +1,37 @@
+bucket,path,name,rating,tags,math_hits,length,accepted
+easy,code_contests-6985,1173_A. Nauuo and Votes,800,greedy,0,2590,yes
+easy,code_contests-6876,1060_B. Maximum Sum of Digits,1100,greedy,0,1547,no
+easy,code_contests-0153,5_A. Chat Server's Outgoing Traffic,1000,implementation,0,2594,yes
+easy,code_contests-9521,681_A. A Good Contest,800,implementation,0,2565,yes
+easy,code_contests-9808,1468_N. Waste Sorting,900,greedy;implementation,0,4824,no
+easy,code_contests-2429,160_B. Unlucky Ticket,1100,greedy;sortings,0,2778,no
+easy,code_contests-7337,709_A. Juicer,900,implementation,0,2203,no
+easy,code_contests-1376,1281_A. Suffix Three,800,implementation,0,2673,yes
+easy,code_contests-1202,712_B. Memory and Trident,1100,implementation;strings,0,2269,no
+easy,code_contests-12538,716_A. Crazy Computer,800,implementation,0,2517,yes
+easy,code_contests-8697,863_A. Quasi-palindrome,900,brute force;implementation,0,1421,no
+easy,code_contests-11061,246_A. Buggy Sorting,900,constructive algorithms;greedy;sortings,0,2053,no
+medium,code_contests-12331,72_H. Reverse It!,1600,*special;implementation,0,2129,yes
+medium,code_contests-9943,831_E. Cards Sorting,1600,data structures;implementation;sortings,0,2615,maybe
+medium,code_contests-8227,1066_B. Heaters,1500,greedy;two pointers,0,3240,no
+medium,code_contests-4090,1447_C. Knapsack,1300,constructive algorithms;greedy;sortings,0,2567,no
+medium,code_contests-10536,1545_A. AquaMoon and Strange Sort,1500,sortings,0,2509,maybe
+medium,code_contests-12006,417_B. Crash,1400,implementation,0,2300,no
+medium,code_contests-3662,1199_C. MP3,1600,sortings;two pointers,0,2631,no
+medium,code_contests-4810,1291_C. Mind Control,1600,brute force;data structures;implementation,0,3976,no
+medium,code_contests-8250,175_C. Geometry Horse,1600,greedy;implementation;sortings;two pointers,0,2801,no
+medium,code_contests-4489,1101_E. Polycarp's New Job,1500,implementation,0,2951,yes
+medium,code_contests-9312,683_C. Symmetric Difference,1600,*special,0,1399,no
+medium,code_contests-7011,357_B. Flag Day,1400,constructive algorithms;implementation,0,2799,no
+hard,code_contests-2866,64_D. Presents,1800,*special;greedy,0,1639,no
+hard,code_contests-1514,656_F. Ace It!,1900,*special,0,951,no
+hard,code_contests-0546,141_C. Queue,1800,constructive algorithms;greedy;sortings,0,2591,no
+hard,code_contests-1596,153_D. Date Change,2000,*special,0,1534,no
+hard,code_contests-3390,72_B. INI-file,2200,*special;implementation,0,2589,yes
+hard,code_contests-9192,318_D. Ants,2000,brute force;implementation,0,2208,maybe
+hard,code_contests-6181,370_D. Broken Monitor,2100,brute force;constructive algorithms;greedy;implementation,0,3501,no
+hard,code_contests-8667,162_J. Brackets,1800,*special,0,1305,no
+hard,code_contests-2206,1231_E. Middle-Out,2200,constructive algorithms;greedy;strings,0,3290,no
+hard,code_contests-11146,1213_E. Two Small Strings,1900,brute force;constructive algorithms,0,2191,no
+hard,code_contests-7724,140_D. New Year Contest,1800,greedy;sortings,0,3978,no
+hard,code_contests-0976,317_B. Ants,2000,brute force;implementation,0,2208,no
