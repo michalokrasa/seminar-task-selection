@@ -1,0 +1,1 @@
+Given a string of lowercase Latin letters, determine whether it is a valid Berlanese word. In Berlanese, every consonant (except "n") must be immediately followed by a vowel (one of a, e, i, o, u). The letter "n" is special — it may be followed by any letter or nothing at all. Output "YES" if the word satisfies the rule, "NO" otherwise.

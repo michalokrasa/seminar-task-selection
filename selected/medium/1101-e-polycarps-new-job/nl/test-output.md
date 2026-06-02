@@ -8,12 +8,12 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.10.18, pytest-7.4.4, pluggy-1.6.0
 PyQt5 5.15.10 -- Qt runtime 5.15.17 -- Qt compiled 5.15.2
-rootdir: /tmp/tmp76g451_i
+rootdir: /tmp/tmpfsr2vit_
 configfile: pytest.ini
 plugins: Faker-25.1.0, anyio-4.9.0, cov-5.0.0, mock-3.12.0, qt-4.3.1
 collected 1 item
 
-tmp9rmt1af8.py::test_code_contest_solution 
+tmp_sk2ieob.py::test_code_contest_solution 
 ============================================================
 Test 1/8
 ============================================================
@@ -288,5 +288,5 @@ YES
 ✓ All 8 tests passed!
 PASSED
 
-============================== 1 passed in 1.45s ===============================
+============================== 1 passed in 1.79s ===============================
 ```

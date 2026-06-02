@@ -8,12 +8,12 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.10.18, pytest-7.4.4, pluggy-1.6.0
 PyQt5 5.15.10 -- Qt runtime 5.15.17 -- Qt compiled 5.15.2
-rootdir: /tmp/tmpd1zgih9p
+rootdir: /tmp/tmp51w8889_
 configfile: pytest.ini
 plugins: Faker-25.1.0, anyio-4.9.0, cov-5.0.0, mock-3.12.0, qt-4.3.1
 collected 1 item
 
-tmpi06jn959.py::test_code_contest_solution 
+tmprmcmxavj.py::test_code_contest_solution 
 ============================================================
 Test 1/10
 ============================================================
@@ -187,5 +187,5 @@ Actual Output from /app/solution.py:
 ✓ All 10 tests passed!
 PASSED
 
-============================== 1 passed in 2.43s ===============================
+============================== 1 passed in 2.49s ===============================
 ```

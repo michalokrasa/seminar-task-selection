@@ -10,8 +10,9 @@ Arguments:
     --format    Required. Which description format to use as the GPT prompt.
                   gherkin  -> <problem>/gherkin/description.feature
                   nl       -> <problem>/nl/description.md
-    --problem   Optional. Path to a single problem folder. When omitted,
+    --problem      Optional. Path to a single problem folder. When omitted,
                 all problems under selected/ are processed.
+    --no-overwrite  Optional. Skip problems that already have a solution file.
 
 Environment:
     OPENAI_API_KEY  Must be set.
@@ -90,13 +91,18 @@ def generate_solution(client: OpenAI, description: str) -> str:
     return strip_fences(response.choices[0].message.content)
 
 
-def process_problem(client: OpenAI, problem_dir: Path, fmt: str) -> None:
+def process_problem(client: OpenAI, problem_dir: Path, fmt: str, no_overwrite: bool = False) -> None:
     desc_file = find_description(problem_dir, fmt)
     if desc_file is None:
         print(f"  [SKIP] No description found in {problem_dir.name}")
         return
 
     out_file = output_path(problem_dir, desc_file)
+
+    if no_overwrite and out_file.exists():
+        print(f"  [SKIP] Solution already exists for {problem_dir.name}")
+        return
+
     out_file.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"  [GEN]  {problem_dir.name}  ({desc_file.relative_to(problem_dir)}) -> {out_file.relative_to(problem_dir)}")
@@ -133,6 +139,11 @@ def main() -> None:
         help="Path to a single problem folder. Omit to process all problems.",
     )
     parser.add_argument(
+        "--no-overwrite",
+        action="store_true",
+        help="Skip problems that already have a solution file.",
+    )
+    parser.add_argument(
         "--difficulty",
         default="all",
         choices=["easy", "medium", "hard", "all"],
@@ -158,7 +169,7 @@ def main() -> None:
 
     print(f"Processing {len(problems)} problem(s) with format='{args.format}'...\n")
     for problem_dir in problems:
-        process_problem(client, problem_dir, args.format)
+        process_problem(client, problem_dir, args.format, args.no_overwrite)
 
     print("\nDone.")
 
