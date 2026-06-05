@@ -1,0 +1,31 @@
+bucket,split,id,path,url,tags,num_tests,num_solutions,length
+interview,test,0318,APPS/test/0318,https://codeforces.com/problemset/problem/622/B,implementation,59,25,1014
+interview,test,0118,APPS/test/0118,https://codeforces.com/problemset/problem/697/A,implementation;math,95,25,1375
+interview,test,0715,APPS/test/0715,https://codeforces.com/problemset/problem/437/A,implementation,35,25,2201
+interview,test,0355,APPS/test/0355,https://codeforces.com/problemset/problem/592/A,implementation,56,24,2886
+interview,test,0233,APPS/test/0233,https://codeforces.com/problemset/problem/703/A,implementation,69,24,2050
+interview,test,0470,APPS/test/0470,https://codeforces.com/problemset/problem/680/A,constructive algorithms;implementation,48,25,1579
+interview,test,0276,APPS/test/0276,https://codeforces.com/problemset/problem/987/A,implementation,64,24,1400
+interview,test,0100,APPS/test/0100,https://codeforces.com/problemset/problem/370/D,brute force;constructive algorithms;greedy;implementation,105,2,2823
+interview,test,0222,APPS/test/0222,https://codeforces.com/problemset/problem/962/C,brute force;implementation;math,70,22,1325
+interview,test,0272,APPS/test/0272,https://codeforces.com/problemset/problem/748/B,implementation;strings,64,25,1791
+competition,test,3776,APPS/test/3776,https://codeforces.com/problemset/problem/722/A,brute force;implementation,52,9,1441
+competition,test,3846,APPS/test/3846,https://codeforces.com/problemset/problem/420/B,implementation,38,1,2285
+competition,test,3874,APPS/test/3874,https://codeforces.com/problemset/problem/730/H,constructive algorithms;implementation,34,24,2269
+introductory,test,4060,APPS/test/4060,https://codeforces.com/problemset/problem/1095/E,implementation,35,24,1256
+competition,train,2352,APPS/train/2352,https://codeforces.com/problemset/problem/245/B,implementation;strings,20,17,1813
+competition,test,3998,APPS/test/3998,https://codeforces.com/problemset/problem/730/A,greedy;implementation,20,8,2228
+competition,test,3827,APPS/test/3827,https://codeforces.com/problemset/problem/960/A,implementation,42,22,1554
+introductory,test,4032,APPS/test/4032,https://codeforces.com/problemset/problem/999/A,brute force;implementation,48,24,1918
+competition,test,3751,APPS/test/3751,https://codeforces.com/problemset/problem/765/B,greedy;implementation;strings,59,25,1709
+competition,test,3898,APPS/test/3898,https://codeforces.com/problemset/problem/634/A,constructive algorithms;implementation,29,24,2043
+introductory,test,4057,APPS/test/4057,https://codeforces.com/problemset/problem/1003/A,implementation,37,24,966
+competition,test,3844,APPS/test/3844,https://codeforces.com/problemset/problem/914/B,games;greedy;implementation,39,24,1473
+competition,test,3912,APPS/test/3912,https://codeforces.com/problemset/problem/883/H,brute force;implementation;strings,27,14,1159
+introductory,test,4020,APPS/test/4020,https://codeforces.com/problemset/problem/1133/A,implementation,66,25,1546
+introductory,test,4025,APPS/test/4025,https://codeforces.com/problemset/problem/1154/C,implementation;math,56,25,2054
+introductory,test,4038,APPS/test/4038,https://codeforces.com/problemset/problem/1118/C,constructive algorithms;implementation,45,1,3084
+introductory,test,4015,APPS/test/4015,https://codeforces.com/problemset/problem/1141/A,implementation;math,77,25,1131
+introductory,test,4006,APPS/test/4006,https://codeforces.com/problemset/problem/1157/A,implementation,130,25,1153
+introductory,test,4041,APPS/test/4041,https://codeforces.com/problemset/problem/1203/D1,greedy;implementation,44,25,1693
+introductory,test,4123,APPS/test/4123,https://codeforces.com/problemset/problem/977/B,implementation;strings,22,1,1278

@@ -4,14 +4,16 @@ Use GPT to generate a Python solution for each problem in selected/,
 based on either the Gherkin (.feature) or NL (.md) description.
 
 Usage:
-    python scripts/4_generate_solutions.py --format (gherkin|nl) [--problem <path>]
+    python scripts/4_generate_solutions.py --format (gherkin|nl) [--problem <path>] [--base-dir <path>]
 
 Arguments:
     --format    Required. Which description format to use as the GPT prompt.
                   gherkin  -> <problem>/gherkin/description.feature
                   nl       -> <problem>/nl/description.md
     --problem      Optional. Path to a single problem folder. When omitted,
-                all problems under selected/ are processed.
+                all problems under the base dir are processed.
+    --base-dir     Optional. Root directory containing difficulty/category
+                subdirectories. Defaults to selected/.
     --no-overwrite  Optional. Skip problems that already have a solution file.
 
 Environment:
@@ -42,8 +44,11 @@ SELECTED_DIR = ROOT / "selected"
 SYSTEM_PROMPT = (
     "You are an expert competitive programmer. "
     "Given a problem description, write a complete, correct Python 3 solution. "
-    "Output ONLY the raw Python code with no markdown fences, no explanation, "
-    "and no commentary — just the code that can be run directly."
+    "The solution must read input from stdin and write output to stdout, exactly as a competitive programming judge expects. "
+    "Output ONLY the raw Python code with no markdown fences, no explanation, and no commentary. "
+    "Do NOT include any test cases, example calls, print statements for demonstration, "
+    "or any code inside an 'if __name__ == \"__main__\"' block other than the main solving logic. "
+    "The file must be directly executable by a judge: nothing but the solution."
 )
 
 
@@ -146,8 +151,12 @@ def main() -> None:
     parser.add_argument(
         "--difficulty",
         default="all",
-        choices=["easy", "medium", "hard", "all"],
-        help="Limit to one difficulty bucket (default: all).",
+        help="Limit to one category/difficulty subdirectory name (default: all).",
+    )
+    parser.add_argument(
+        "--base-dir",
+        default=None,
+        help="Root directory containing category subdirectories. Defaults to selected/.",
     )
     args = parser.parse_args()
 
@@ -165,7 +174,8 @@ def main() -> None:
             sys.exit(1)
         problems = [problem_dir]
     else:
-        problems = collect_problems(SELECTED_DIR, args.difficulty)
+        base_dir = Path(args.base_dir).resolve() if args.base_dir else SELECTED_DIR
+        problems = collect_problems(base_dir, args.difficulty)
 
     print(f"Processing {len(problems)} problem(s) with format='{args.format}'...\n")
     for problem_dir in problems:
