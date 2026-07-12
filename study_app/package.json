@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "googleapis": "^140.0.0",
     "@codemirror/commands": "^6.6.0",
     "@codemirror/language": "^6.12.4",
     "@codemirror/state": "^6.7.1",
