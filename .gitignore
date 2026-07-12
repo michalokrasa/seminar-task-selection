@@ -7,3 +7,5 @@ __pycache__/
 # Downloaded dataset (large binary, not committed)
 data/tasks.parquet
 data/APPS/
+# Local Netlify folder
+.netlify

@@ -1,1 +1,0 @@
-Given an array of n integers where all elements are the same except one, find and output the 1-based index of the unique element. The array always has at least 3 elements, so the majority value can be reliably identified. Multiple test cases are given in a single input. This is a straightforward implementation problem requiring no special algorithms.

@@ -1,0 +1,463 @@
+{
+  "token_estimation_method": "tiktoken(cl100k_base)",
+  "overall": {
+    "input_chars": {
+      "count": 18,
+      "sum": 25824,
+      "mean": 1434.67,
+      "median": 1291.0,
+      "min": 601,
+      "max": 2625
+    },
+    "output_chars": {
+      "count": 18,
+      "sum": 12557,
+      "mean": 697.61,
+      "median": 632.5,
+      "min": 211,
+      "max": 1477
+    },
+    "total_chars": {
+      "count": 18,
+      "sum": 38381,
+      "mean": 2132.28,
+      "median": 2036.5,
+      "min": 814,
+      "max": 3833
+    },
+    "input_tokens": {
+      "count": 18,
+      "sum": 6940,
+      "mean": 385.56,
+      "median": 341.5,
+      "min": 154,
+      "max": 763
+    },
+    "output_tokens": {
+      "count": 18,
+      "sum": 3294,
+      "mean": 183,
+      "median": 169.0,
+      "min": 79,
+      "max": 358
+    },
+    "total_tokens": {
+      "count": 18,
+      "sum": 10234,
+      "mean": 568.56,
+      "median": 556.5,
+      "min": 272,
+      "max": 1087
+    }
+  },
+  "by_variant": {
+    "gherkin": {
+      "input_chars": {
+        "count": 9,
+        "sum": 18589,
+        "mean": 2065.44,
+        "median": 2110,
+        "min": 1583,
+        "max": 2625
+      },
+      "output_chars": {
+        "count": 9,
+        "sum": 6301,
+        "mean": 700.11,
+        "median": 569,
+        "min": 211,
+        "max": 1477
+      },
+      "total_chars": {
+        "count": 9,
+        "sum": 24890,
+        "mean": 2765.56,
+        "median": 2574,
+        "min": 1993,
+        "max": 3833
+      },
+      "input_tokens": {
+        "count": 9,
+        "sum": 5149,
+        "mean": 572.11,
+        "median": 540,
+        "min": 437,
+        "max": 763
+      },
+      "output_tokens": {
+        "count": 9,
+        "sum": 1673,
+        "mean": 185.89,
+        "median": 170,
+        "min": 79,
+        "max": 358
+      },
+      "total_tokens": {
+        "count": 9,
+        "sum": 6822,
+        "mean": 758,
+        "median": 769,
+        "min": 565,
+        "max": 1087
+      }
+    },
+    "nl": {
+      "input_chars": {
+        "count": 9,
+        "sum": 7235,
+        "mean": 803.89,
+        "median": 799,
+        "min": 601,
+        "max": 999
+      },
+      "output_chars": {
+        "count": 9,
+        "sum": 6256,
+        "mean": 695.11,
+        "median": 696,
+        "min": 213,
+        "max": 1409
+      },
+      "total_chars": {
+        "count": 9,
+        "sum": 13491,
+        "mean": 1499,
+        "median": 1526,
+        "min": 814,
+        "max": 2402
+      },
+      "input_tokens": {
+        "count": 9,
+        "sum": 1791,
+        "mean": 199,
+        "median": 190,
+        "min": 154,
+        "max": 246
+      },
+      "output_tokens": {
+        "count": 9,
+        "sum": 1621,
+        "mean": 180.11,
+        "median": 168,
+        "min": 82,
+        "max": 317
+      },
+      "total_tokens": {
+        "count": 9,
+        "sum": 3412,
+        "mean": 379.11,
+        "median": 391,
+        "min": 272,
+        "max": 548
+      }
+    }
+  },
+  "by_level_and_variant": {
+    "competition": {
+      "gherkin": {
+        "input_chars": {
+          "count": 3,
+          "sum": 6801,
+          "mean": 2267,
+          "median": 2356,
+          "min": 1820,
+          "max": 2625
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 2811,
+          "mean": 937,
+          "median": 765,
+          "min": 569,
+          "max": 1477
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 9612,
+          "mean": 3204,
+          "median": 3390,
+          "min": 2389,
+          "max": 3833
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 1973,
+          "mean": 657.67,
+          "median": 729,
+          "min": 481,
+          "max": 763
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 711,
+          "mean": 237,
+          "median": 183,
+          "min": 170,
+          "max": 358
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 2684,
+          "mean": 894.67,
+          "median": 946,
+          "min": 651,
+          "max": 1087
+        }
+      },
+      "nl": {
+        "input_chars": {
+          "count": 3,
+          "sum": 2819,
+          "mean": 939.67,
+          "median": 993,
+          "min": 827,
+          "max": 999
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 2977,
+          "mean": 992.33,
+          "median": 872,
+          "min": 696,
+          "max": 1409
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 5796,
+          "mean": 1932,
+          "median": 1699,
+          "min": 1695,
+          "max": 2402
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 650,
+          "mean": 216.67,
+          "median": 223,
+          "min": 196,
+          "max": 231
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 707,
+          "mean": 235.67,
+          "median": 222,
+          "min": 168,
+          "max": 317
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 1357,
+          "mean": 452.33,
+          "median": 418,
+          "min": 391,
+          "max": 548
+        }
+      }
+    },
+    "interview": {
+      "gherkin": {
+        "input_chars": {
+          "count": 3,
+          "sum": 6327,
+          "mean": 2109,
+          "median": 2110,
+          "min": 1869,
+          "max": 2348
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 2295,
+          "mean": 765,
+          "median": 866,
+          "min": 211,
+          "max": 1218
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 8622,
+          "mean": 2874,
+          "median": 3214,
+          "min": 2080,
+          "max": 3328
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 1646,
+          "mean": 548.67,
+          "median": 540,
+          "min": 494,
+          "max": 612
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 593,
+          "mean": 197.67,
+          "median": 204,
+          "min": 79,
+          "max": 310
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 2239,
+          "mean": 746.33,
+          "median": 804,
+          "min": 619,
+          "max": 816
+        }
+      },
+      "nl": {
+        "input_chars": {
+          "count": 3,
+          "sum": 2174,
+          "mean": 724.67,
+          "median": 774,
+          "min": 601,
+          "max": 799
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 1832,
+          "mean": 610.67,
+          "median": 752,
+          "min": 213,
+          "max": 867
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 4006,
+          "mean": 1335.33,
+          "median": 1526,
+          "min": 814,
+          "max": 1666
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 557,
+          "mean": 185.67,
+          "median": 187,
+          "min": 180,
+          "max": 190
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 493,
+          "mean": 164.33,
+          "median": 173,
+          "min": 82,
+          "max": 238
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 1050,
+          "mean": 350,
+          "median": 360,
+          "min": 272,
+          "max": 418
+        }
+      }
+    },
+    "introductory": {
+      "gherkin": {
+        "input_chars": {
+          "count": 3,
+          "sum": 5461,
+          "mean": 1820.33,
+          "median": 1756,
+          "min": 1583,
+          "max": 2122
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 1195,
+          "mean": 398.33,
+          "median": 410,
+          "min": 333,
+          "max": 452
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 6656,
+          "mean": 2218.67,
+          "median": 2089,
+          "min": 1993,
+          "max": 2574
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 1530,
+          "mean": 510,
+          "median": 453,
+          "min": 437,
+          "max": 640
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 369,
+          "mean": 123,
+          "median": 128,
+          "min": 112,
+          "max": 129
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 1899,
+          "mean": 633,
+          "median": 565,
+          "min": 565,
+          "max": 769
+        }
+      },
+      "nl": {
+        "input_chars": {
+          "count": 3,
+          "sum": 2242,
+          "mean": 747.33,
+          "median": 668,
+          "min": 652,
+          "max": 922
+        },
+        "output_chars": {
+          "count": 3,
+          "sum": 1447,
+          "mean": 482.33,
+          "median": 465,
+          "min": 442,
+          "max": 540
+        },
+        "total_chars": {
+          "count": 3,
+          "sum": 3689,
+          "mean": 1229.67,
+          "median": 1117,
+          "min": 1110,
+          "max": 1462
+        },
+        "input_tokens": {
+          "count": 3,
+          "sum": 584,
+          "mean": 194.67,
+          "median": 184,
+          "min": 154,
+          "max": 246
+        },
+        "output_tokens": {
+          "count": 3,
+          "sum": 421,
+          "mean": 140.33,
+          "median": 143,
+          "min": 129,
+          "max": 149
+        },
+        "total_tokens": {
+          "count": 3,
+          "sum": 1005,
+          "mean": 335,
+          "median": 313,
+          "min": 297,
+          "max": 395
+        }
+      }
+    }
+  }
+}

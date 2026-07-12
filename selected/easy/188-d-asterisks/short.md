@@ -1,1 +1,0 @@
-Given a single integer n, print a triangle pattern of asterisks with n lines. The i-th line contains exactly i asterisk characters. For example, n=3 produces lines of 1, 2, and 3 asterisks. This is a basic output-formatting problem with no complex logic required.

@@ -1,0 +1,7 @@
+{
+  "name": "study-app-functions",
+  "version": "0.1.0",
+  "dependencies": {
+    "googleapis": "^140.0.0"
+  }
+}
