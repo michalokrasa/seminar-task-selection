@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { marked } from '../lib/markdown.js';
 import GherkinEditor from './GherkinEditor.jsx';
+
+const AUTOSAVE_INTERVAL_MS = 30000;
 
 export default function TaskStep({
   pid,
@@ -18,11 +20,34 @@ export default function TaskStep({
 
   const label = modality === 'gherkin' ? 'Gherkin' : 'Natural-language';
 
-  async function handleSave() {
+  // Keep a ref to the latest draft/task info so the autosave interval below
+  // always saves the freshest value without needing to be re-created on
+  // every keystroke.
+  const latestRef = useRef({ draft, taskSlug, modality, onSaveDraft });
+  useEffect(() => {
+    latestRef.current = { draft, taskSlug, modality, onSaveDraft };
+  }, [draft, taskSlug, modality, onSaveDraft]);
+
+  async function saveDraft(text) {
     setSaving(true);
-    await onSaveDraft({ taskSlug, modality, prompt: draft });
+    await onSaveDraft({ taskSlug, modality, prompt: text });
     setSaved(true);
     setSaving(false);
+  }
+
+  // Autosave: every 30s, persist the current draft so no input is lost even
+  // if the participant never clicks "Save draft" manually.
+  useEffect(() => {
+    const id = setInterval(() => {
+      const { draft: latestDraft, taskSlug: ts, modality: m, onSaveDraft: save } = latestRef.current;
+      save({ taskSlug: ts, modality: m, prompt: latestDraft });
+      setSaved(true);
+    }, AUTOSAVE_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  async function handleSave() {
+    await saveDraft(draft);
   }
 
   async function handleSubmit() {
@@ -38,31 +63,18 @@ export default function TaskStep({
 
   return (
     <div>
-      <h2 style={{ marginBottom: '0.2rem' }}>Task {stepIndex - 4} — {label} prompt</h2>
-      <p className="hint" style={{ margin: '0 0 0.4rem' }}>
-        Problem: <strong>{taskSlug}</strong>
-      </p>
-      <p style={{ margin: '0 0 0.5rem' }}>
-        Below is the problem description for this task. Read it carefully,
-        then write a prompt that you would give to an LLM so that it can
-        solve this problem for you. Your prompt must be written in{' '}
+      <h2 style={{ marginBottom: '0.4rem' }}>Task {stepIndex - 3}</h2>
+      <p style={{ margin: '0 0 1.5rem', fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.5 }}>
+        Read the problem description below carefully, then write a prompt
+        that you would give to an LLM so that it can solve this problem for
+        you. Your prompt must be written in{' '}
         <strong>{label.toLowerCase()}</strong> format.
       </p>
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.5rem' }}>
-        <div
-          style={{
-            flex: 1,
-            background: '#f8fafc',
-            padding: '1rem',
-            borderRadius: '8px',
-            border: '1px solid #e2e8f0',
-            overflowY: 'auto',
-            maxHeight: '90vh',
-          }}
-        >
+      <div className="task-layout">
+        <div className="task-description">
           <div dangerouslySetInnerHTML={{ __html: marked.parse(description || '') }} />
         </div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div className="task-editor">
           {modality === 'gherkin' ? (
             <GherkinEditor
               value={draft}
@@ -74,7 +86,7 @@ export default function TaskStep({
             />
           ) : (
             <textarea
-              style={{ flex: 1, minHeight: '90vh', resize: 'vertical' }}
+              className="task-textarea"
               value={draft}
               onChange={(e) => {
                 setDraft(e.target.value);
@@ -85,10 +97,13 @@ export default function TaskStep({
           )}
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
+      <div className="task-footer">
         <button className="secondary" onClick={handleSave} disabled={saving}>
           {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save draft'}
         </button>
+        <p className="hint" style={{ margin: 0 }}>
+          Autosave is on — your prompt is saved automatically every 30 seconds.
+        </p>
         <button className="primary" onClick={handleSubmit}>
           Submit and continue →
         </button>

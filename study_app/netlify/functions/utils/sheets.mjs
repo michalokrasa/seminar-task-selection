@@ -36,4 +36,32 @@ export async function appendRow(tab, values) {
   });
 }
 
+// Autosave writes a `draft` row roughly every 30s. Rather than appending a
+// brand-new row every time (which would flood the sheet with near-duplicate
+// history), find the existing draft row for this participant/step and
+// overwrite it in place. Falls back to appending if no existing row is
+// found (e.g. the first save for this step).
+export async function upsertDraftRow(tab, pid, stepId, values) {
+  const sheets = getSheetsClient();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: `${tab}!A2:E`,
+  });
+  const rows = res.data.values || [];
+  const rowIndex = rows.findIndex((r) => r[0] === pid && r[1] === stepId && r[2] === 'draft');
+
+  if (rowIndex === -1) {
+    await appendRow(tab, values);
+    return;
+  }
+
+  const sheetRowNumber = rowIndex + 2; // +2 accounts for the header row + 1-index
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SHEET_ID,
+    range: `${tab}!A${sheetRowNumber}:E${sheetRowNumber}`,
+    valueInputOption: 'USER_ENTERED',
+    resource: { values: [values] },
+  });
+}
+
 export { SHEET_ID };

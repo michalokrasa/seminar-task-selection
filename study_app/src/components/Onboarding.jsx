@@ -1,10 +1,12 @@
 import React from 'react';
 import { marked } from '../lib/markdown.js';
+import welcomeMd from '../content/welcome.md?raw';
 import introMd from '../content/onboarding-intro.md?raw';
 import guidelinesMd from '../content/prompt-guidelines.md?raw';
 import readyMd from '../content/ready-for-task.md?raw';
 
 const CONTENT_BY_TYPE = {
+  welcome: welcomeMd,
   intro: introMd,
   guidelines: guidelinesMd,
   ready: readyMd,

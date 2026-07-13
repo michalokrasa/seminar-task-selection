@@ -1,4 +1,4 @@
-import { appendRow } from './utils/sheets.mjs';
+import { appendRow, upsertDraftRow } from './utils/sheets.mjs';
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -11,13 +11,15 @@ export const handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing pid, stepId, or status' }) };
     }
 
-    await appendRow('progress', [
-      pid,
-      stepId,
-      status,
-      new Date().toISOString(),
-      JSON.stringify(payload || {}),
-    ]);
+    const row = [pid, stepId, status, new Date().toISOString(), JSON.stringify(payload || {})];
+
+    // Drafts are autosaved every 30s; update the same record in place
+    // instead of appending a new row each time.
+    if (status === 'draft') {
+      await upsertDraftRow('progress', pid, stepId, row);
+    } else {
+      await appendRow('progress', row);
+    }
 
     return { statusCode: 200, body: JSON.stringify({ ok: true }) };
   } catch (err) {

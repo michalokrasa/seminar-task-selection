@@ -6,18 +6,27 @@ and counterbalances task/modality assignment across participants.
 
 ## Study flow
 
-1. **Pre-study**
-   1. Consent form (embedded Google Form)
-   2. Baseline questionnaire (embedded Google Form)
-2. **Onboarding**
-   1. Gherkin introduction (custom step)
-   2. Prompt-writing guidelines + examples (custom step)
-   3. "Ready to start" info screen (next step is Task 1; contact email for questions)
-3. **Study**
+The consent form, baseline questionnaire, and post-study survey are **no
+longer part of the app** — they're sent directly to participants via email
+(see `emails/study-invitation.md` and `emails/post-study.md`). Only the
+task-writing portion of the study happens in-app:
+
+1. **Onboarding**
+   1. Welcome screen (custom step; overview of the remaining steps, full-screen + autosave notes)
+   2. Gherkin introduction (custom step)
+   3. Prompt-writing guidelines + examples (custom step)
+   4. "Ready to start" info screen (next step is Task 1; contact email for questions)
+2. **Study**
    1. Task 1 — prompt-writing (custom step, NL or Gherkin per assignment)
    2. Task 2 — prompt-writing (custom step, opposite modality of Task 1)
-4. **Post-study**
-   1. Post-experiment survey (embedded Google Form)
+3. **Confirmation**
+   1. Recap screen confirming both tasks were submitted, with the option to
+      go back and edit either answer, or click "Finish" to end the study
+
+Participants can move **back and forth** between any previously-reached
+step (via the "← Back" / "Next →" nav in `Wizard.jsx`) to review or update
+their answers before finishing — completion of a step is never required to
+revisit it, only to move past the current frontier step.
 
 Each participant accesses the app via a link containing their ID as a path
 segment: `https://<site>/p001`. All state is keyed by this `pid`. If a
@@ -26,12 +35,22 @@ enter it (which then updates the URL via `pushState`, so subsequent reloads
 resume from the path). The old `?pid=p001` query-string form is still
 accepted as a fallback.
 
-Once a participant's `pid` is resolved, `Wizard.jsx` also mirrors the current
-step into the path as `/<pid>/<step-id>` (e.g. `/p001/pre:consent`, or
-`/p001/done` once finished) via `replaceState`. This is purely a display
-convenience for bookmarking/sharing/debugging — the actual current step is
-always re-derived from `/api/progress` on load, never read back out of the
-URL.
+Once a participant's `pid` is resolved, `Wizard.jsx` also mirrors the
+currently viewed step into the path as `/<pid>/<step-id>` (e.g.
+`/p001/task:1:...`, or `/p001/done` once finished) via `replaceState`. This
+is purely a display convenience for bookmarking/sharing/debugging — the
+actual progress is always re-derived from `/api/progress` on load, never
+read back out of the URL.
+
+### Autosave
+
+While writing a prompt in a task step, the draft is autosaved every 30
+seconds (in addition to the manual "Save draft" button and on submit), so
+no input is lost if the participant closes the tab or their connection
+drops. Autosaved drafts update the same `draft` row for that
+participant/step in the `progress` sheet in place (via
+`upsertDraftRow` in `netlify/functions/utils/sheets.mjs`) rather than
+appending a new row every 30s.
 
 ## Architecture
 
@@ -39,8 +58,7 @@ URL.
 Browser (Vite + React SPA)
   ├─ GET  /api/assignment?pid=X   → Netlify Function → reads "assignments" sheet
   ├─ GET  /api/progress?pid=X     → Netlify Function → reads "progress" sheet
-  ├─ POST /api/step-complete      → Netlify Function → appends row to "progress" sheet
-  └─ <iframe src="https://docs.google.com/forms/...">  (for form-type steps)
+  └─ POST /api/step-complete      → Netlify Function → appends/updates row in "progress" sheet
 ```
 
 - **Frontend**: Vite + React, single-page wizard (no routing library — one
@@ -57,19 +75,19 @@ Browser (Vite + React SPA)
 ### Why this stack (see prior design discussion)
 
 - Google Forms alone can't enforce sequential gating or per-participant
-  counterbalanced ordering — hence a thin custom app owns flow control while
-  Forms are embedded only for the parts where they add nothing extra
-  (consent, Likert scales).
+  counterbalanced ordering — hence a thin custom app owns flow control for
+  the task-writing portion, while consent/baseline/post-study Forms are
+  sent directly via email since they don't need any of that gating logic.
 - Netlify Functions + Sheets API avoids running/maintaining a database for a
   small-N pilot study.
 
 ## Data model (Google Sheet tabs)
 
-| Tab                | Columns                                                                                                                     | Written by                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `assignments`      | `participant_id, task_1_slug, task_1_modality, task_2_slug, task_2_modality, condition_group, task_1_bucket, task_2_bucket` | Uploaded once, offline, from `scripts/generate_assignments.py` output                |
-| `progress`         | `participant_id, step_id, status, timestamp, payload`                                                                       | Appended live by `/api/step-complete` (`status` ∈ `started` / `draft` / `completed`) |
-| (native form tabs) | Whatever each Google Form auto-creates                                                                                      | Google Forms, on submit                                                              |
+| Tab                | Columns                                                                                                                     | Written by                                                                                                                                  |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assignments`      | `participant_id, task_1_slug, task_1_modality, task_2_slug, task_2_modality, condition_group, task_1_bucket, task_2_bucket` | Uploaded once, offline, from `scripts/generate_assignments.py` output                                                                       |
+| `progress`         | `participant_id, step_id, status, timestamp, payload`                                                                       | Written live by `/api/step-complete` (`status` ∈ `started` / `draft` / `completed`); `draft` rows are updated in place, others are appended |
+| (native form tabs) | Whatever each Google Form auto-creates                                                                                      | Google Forms, on submit                                                                                                                     |
 
 `step_id` for task steps encodes the concrete assignment, e.g.
 `task:1:730-h:gherkin`, so progress rows are self-describing without needing
@@ -122,12 +140,12 @@ This runs automatically as part of `npm run dev` / `npm run build`.
 src/
 ├── App.jsx                    ← mounts the wizard
 ├── components/
-│   ├── Wizard.jsx             ← step engine: resolves current step, fetches/records progress
+│   ├── Wizard.jsx             ← step engine: resolves current/viewed step, fetches/records progress, back/forth nav
 │   ├── ProgressBar.jsx        ← visual step indicator
-│   ├── FormStep.jsx           ← embeds a Google Form iframe + "Continue" button
 │   ├── Onboarding.jsx         ← static Gherkin intro / guidelines content
-│   └── TaskStep.jsx           ← prompt-writing textarea for a study task
-├── config/steps.js            ← master step-ID list + Google Form URLs + modality labels
+│   ├── ConfirmationStep.jsx   ← recap screen before finishing the study
+│   └── TaskStep.jsx           ← prompt-writing editor for a study task, with autosave
+├── config/steps.js            ← master step-ID list + modality labels
 ├── hooks/useParticipant.js    ← resolves `pid` from the URL, fetches assignment
 └── data/descriptions.json     ← generated by scripts/build_descriptions.py (gitignored)
 ```
@@ -142,22 +160,27 @@ step IDs like `task:1:730-h:gherkin`.
 On each render, `Wizard.jsx`:
 
 1. Fetches `completedStepIds` for the participant from `/api/progress`.
-2. Finds the first step not yet completed → that's the current step.
-3. On mount of a step, records a `started` event (idempotent-ish; best
+2. Computes `frontierIndex` — the first step not yet completed — which
+   gates how far forward the participant can navigate.
+3. Tracks a separate `viewIndex` for the step currently displayed, which
+   can move freely between `0` and `frontierIndex` via the "← Back" /
+   "Next →" nav, letting participants review or edit previously completed
+   steps without losing their place.
+4. On mount of a step, records a `started` event (idempotent-ish; best
    effort, not deduplicated).
-4. On "Continue"/"Submit", records a `completed` event and advances.
+5. On "Continue"/"Submit", records a `completed` event and advances
+   `viewIndex` by one.
 
 This means **closing and reopening the link resumes exactly where the
 participant left off** — state lives in the Sheet, not in browser storage.
 
-### Google Form steps
+### Email-based forms
 
-Cross-origin iframes can't notify the parent page when a Form is submitted,
-so `FormStep.jsx` uses a self-report pattern: the form is embedded, and a
-separate "Continue →" button (with instructions to submit the form first)
-records completion. This is a known limitation — see the note in prior
-design discussion about the Apps Script webhook alternative if exact
-Form-submission timestamps become necessary.
+The consent form, baseline questionnaire, and post-study survey are sent
+directly to participants via email rather than embedded in the app (see
+`emails/study-invitation.md` and `emails/post-study.md`) — cross-origin
+iframes can't notify the parent page when a Google Form is submitted, and
+these forms don't need the app's sequential-gating logic anyway.
 
 ## Backend structure
 
@@ -168,6 +191,18 @@ netlify/functions/
 ├── progress.mjs          ← GET/POST /api/progress?pid=X (also usable for polling)
 └── step-complete.mjs     ← POST /api/step-complete {pid, stepId, status, payload}
 ```
+
+## Email templates
+
+```
+emails/
+├── study-invitation.md   ← sent at study start: consent + baseline forms, study link
+└── post-study.md         ← sent after both tasks are done: post-study survey
+```
+
+Both templates use `{{PLACEHOLDER}}` tokens (participant name/ID, form URLs,
+study link) to fill in per send, and remind participants to use a full-size
+screen (not a phone/tablet) for the best experience.
 
 Required environment variables (set in Netlify site settings, or a local
 `.env` for `netlify dev`):
@@ -198,9 +233,7 @@ config (`npm run build`, publish `dist/`, functions in
 
 ## Known TODOs
 
-- `src/config/steps.js` `FORM_URLS` still contain placeholder `REPLACE`
-  Google Form URLs — swap in real form links once created.
+- Fill in the real Google Form URLs and study link in `emails/*.md` before
+  sending them out.
 - Reconcile `selected/` vs `apps_selected_approved/` as the single source of
   truth for task descriptions and assignment slugs.
-- `FormStep.jsx` completion is self-reported; consider the Apps
-  Script `onFormSubmit` webhook if exact submission timestamps matter.

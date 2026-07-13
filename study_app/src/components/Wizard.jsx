@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MASTER_STEP_IDS, FORM_URLS } from '../config/steps.js';
+import { MASTER_STEP_IDS } from '../config/steps.js';
 import descriptions from '../data/descriptions.json';
 import ProgressBar from './ProgressBar.jsx';
-import FormStep from './FormStep.jsx';
 import Onboarding from './Onboarding.jsx';
 import TaskStep from './TaskStep.jsx';
+import ConfirmationStep from './ConfirmationStep.jsx';
 import ReferenceModal from './ReferenceModal.jsx';
 
 async function fetchProgress(pid) {
@@ -57,16 +57,28 @@ export default function Wizard({ pid, assignment, loading, error }) {
           modality: assignment.task_2_modality,
         };
       }
-      return { id, kind: 'form' };
+      return { id, kind: 'static' };
     });
   }, [assignment]);
 
-  const currentIndex = React.useMemo(() => {
+  // frontierIndex is the furthest step the participant has reached — the
+  // first step not yet completed (or the last step, once everything is
+  // done). It gates how far forward `viewIndex` (see below) can move.
+  const frontierIndex = React.useMemo(() => {
     if (steps.length === 0) return 0;
     let i = 0;
     while (i < steps.length && completedStepIds.includes(steps[i].id)) i += 1;
     return Math.min(i, steps.length - 1);
   }, [completedStepIds, steps]);
+
+  // viewIndex is the step currently being displayed. It lets participants
+  // navigate back to review/edit previously completed steps, and forward
+  // again, independently of the frontier.
+  const [viewIndex, setViewIndex] = useState(0);
+
+  useEffect(() => {
+    setViewIndex((v) => Math.min(Math.max(v, 0), frontierIndex));
+  }, [frontierIndex]);
 
   const isDone = React.useMemo(
     () => steps.length > 0 && completedStepIds.includes(steps[steps.length - 1].id),
@@ -92,41 +104,50 @@ export default function Wizard({ pid, assignment, loading, error }) {
   // — reloading always re-resolves the step from /api/progress.
   useEffect(() => {
     if (!pid || steps.length === 0) return;
-    const segment = isDone ? 'done' : steps[currentIndex]?.id;
+    const segment = isDone ? 'done' : steps[viewIndex]?.id;
     if (!segment) return;
     const target = `/${encodeURIComponent(pid)}/${segment}`;
     if (window.location.pathname !== target) {
       window.history.replaceState({}, '', target);
     }
-  }, [pid, steps, currentIndex, isDone]);
+  }, [pid, steps, viewIndex, isDone]);
 
   useEffect(() => {
     if (stepLoading) return;
-    if (!steps[currentIndex]) return;
-    const id = steps[currentIndex].id;
+    if (!steps[viewIndex]) return;
+    const id = steps[viewIndex].id;
     if (completedStepIds.includes(id)) return;
     if (startedStepIdsRef.current.has(id)) return;
     startedStepIdsRef.current.add(id);
     recordStep(pid, id, 'started').catch(() => {
       startedStepIdsRef.current.delete(id);
     });
-  }, [currentIndex, steps, pid, completedStepIds, stepLoading]);
+  }, [viewIndex, steps, pid, completedStepIds, stepLoading]);
 
   async function handleComplete(payload) {
-    const current = steps[currentIndex];
+    const current = steps[viewIndex];
     if (!current) return;
     try {
       await recordStep(pid, current.id, 'completed', payload);
       setCompletedStepIds((prev) => (prev.includes(current.id) ? prev : [...prev, current.id]));
+      setViewIndex((v) => Math.min(v + 1, steps.length - 1));
     } catch (err) {
       setStepError(err.message);
     }
   }
 
   async function handleSaveDraft(payload) {
-    const id = steps[currentIndex].id;
+    const id = steps[viewIndex].id;
     await recordStep(pid, id, 'draft', payload);
     setDrafts((prev) => ({ ...prev, [id]: payload }));
+  }
+
+  function goBack() {
+    setViewIndex((v) => Math.max(v - 1, 0));
+  }
+
+  function goForward() {
+    setViewIndex((v) => Math.min(v + 1, frontierIndex));
   }
 
   if (loading || stepLoading) return <p>Loading study...</p>;
@@ -134,9 +155,9 @@ export default function Wizard({ pid, assignment, loading, error }) {
   if (stepError) return <div className="error">{stepError}</div>;
   if (!assignment) return <div className="error">No assignment found for participant ID.</div>;
 
-  const current = steps[currentIndex];
+  const current = steps[viewIndex];
   const completedSet = new Set(completedStepIds);
-  const canShowReference = completedSet.has('onboarding:guidelines');
+  const canShowReference = current?.kind === 'task';
 
   if (isDone) {
     return (
@@ -152,9 +173,17 @@ export default function Wizard({ pid, assignment, loading, error }) {
     <div>
       <ProgressBar
         total={steps.length}
-        current={currentIndex}
+        current={viewIndex}
         completed={completedSet}
       />
+      <div className="wizard-nav">
+        <button className="secondary" disabled={viewIndex === 0} onClick={goBack}>
+          ← Back
+        </button>
+        <button className="secondary" disabled={viewIndex >= frontierIndex} onClick={goForward}>
+          Next →
+        </button>
+      </div>
       {canShowReference && (
         <button className="reference-link" onClick={() => setShowReference(true)}>
           📖 View training materials
@@ -163,7 +192,7 @@ export default function Wizard({ pid, assignment, loading, error }) {
       <StepContent
         pid={pid}
         step={current}
-        stepIndex={currentIndex}
+        stepIndex={viewIndex}
         draft={drafts[current.id]?.prompt || ''}
         onComplete={handleComplete}
         onSaveDraft={handleSaveDraft}
@@ -191,18 +220,16 @@ function StepContent({ pid, step, stepIndex, draft, onComplete, onSaveDraft }) {
   }
 
   switch (step.id) {
-    case 'pre:consent':
-      return <FormStep pid={pid} title="Consent Form" formUrl={FORM_URLS['pre:consent']} onContinue={onComplete} />;
-    case 'pre:baseline':
-      return <FormStep pid={pid} title="Baseline Questionnaire" formUrl={FORM_URLS['pre:baseline']} onContinue={onComplete} />;
+    case 'onboarding:welcome':
+      return <Onboarding type="welcome" onContinue={onComplete} />;
     case 'onboarding:intro':
       return <Onboarding type="intro" onContinue={onComplete} />;
     case 'onboarding:guidelines':
       return <Onboarding type="guidelines" onContinue={onComplete} />;
     case 'check:comprehension':
       return <Onboarding type="ready" onContinue={onComplete} />;
-    case 'post:feedback':
-      return <FormStep pid={pid} title="Post-Study Survey" formUrl={FORM_URLS['post:feedback']} onContinue={onComplete} />;
+    case 'confirm:submission':
+      return <ConfirmationStep onFinish={() => onComplete({})} />;
     default:
       return <div className="error">Unknown step: {step.id}</div>;
   }
