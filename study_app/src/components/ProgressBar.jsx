@@ -6,8 +6,8 @@ export default function ProgressBar({ total, current, completed }) {
       {Array.from({ length: total }).map((_, i) => {
         let cls = 'progress-dot';
         if (completed.has(i)) cls += ' completed';
-        else if (i === current) cls += ' current';
-        return <div key={i} className={cls} />;
+        if (i === current) cls += ' current';
+        return <div key={i} className={cls} aria-current={i === current ? 'step' : undefined} />;
       })}
     </div>
   );

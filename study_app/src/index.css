@@ -182,7 +182,7 @@ textarea {
 }
 
 .progress-dot.current {
-  background-color: #93c5fd;
+  box-shadow: 0 0 0 2px #1e40af;
 }
 
 .error {
