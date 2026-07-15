@@ -17,11 +17,13 @@ task-writing portion of the study happens in-app:
    3. Prompt-writing guidelines + examples (custom step)
    4. "Ready to start" info screen (next step is Task 1; contact email for questions)
 2. **Study**
-   1. Task 1 — prompt-writing (custom step, NL or Gherkin per assignment)
-   2. Task 2 — prompt-writing (custom step, opposite modality of Task 1)
+   1. Task 1A — prompt-writing (custom step, NL or Gherkin per assignment)
+   2. Task 1B — prompt-writing (custom step, the other modality for the same task)
+   3. Task 2A — prompt-writing (custom step, NL or Gherkin per assignment)
+   4. Task 2B — prompt-writing (custom step, the other modality for the same task)
 3. **Confirmation**
-   1. Recap screen confirming both tasks were submitted, with the option to
-      go back and edit either answer, or click "Finish" to end the study
+   1. Recap screen confirming all four specifications were submitted, with the option to
+      go back and edit any answer, or click "Finish" to end the study
 
 Participants can move **back and forth** between any previously-reached
 step (via the "← Back" / "Next →" nav in `Wizard.jsx`) to review or update
@@ -83,11 +85,11 @@ Browser (Vite + React SPA)
 
 ## Data model (Google Sheet tabs)
 
-| Tab                | Columns                                                                                                                     | Written by                                                                                                                                  |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assignments`      | `participant_id, task_1_slug, task_1_modality, task_2_slug, task_2_modality, condition_group, task_1_bucket, task_2_bucket` | Uploaded once, offline, from `scripts/generate_assignments.py` output                                                                       |
-| `progress`         | `participant_id, step_id, status, timestamp, payload`                                                                       | Written live by `/api/step-complete` (`status` ∈ `started` / `draft` / `completed`); `draft` rows are updated in place, others are appended |
-| (native form tabs) | Whatever each Google Form auto-creates                                                                                      | Google Forms, on submit                                                                                                                     |
+| Tab                | Columns                                                                                                                                                                                 | Written by                                                                                                                                  |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assignments`      | `participant_id, task_1_slug, task_1_first_modality, task_1_second_modality, task_2_slug, task_2_first_modality, task_2_second_modality, condition_group, task_1_bucket, task_2_bucket` | Uploaded once, offline, from `scripts/generate_assignments.py` output                                                                       |
+| `progress`         | `participant_id, step_id, status, timestamp, payload`                                                                                                                                   | Written live by `/api/step-complete` (`status` ∈ `started` / `draft` / `completed`); `draft` rows are updated in place, others are appended |
+| (native form tabs) | Whatever each Google Form auto-creates                                                                                                                                                  | Google Forms, on submit                                                                                                                     |
 
 `step_id` for task steps encodes the concrete assignment, e.g.
 `task:1:730-h:gherkin`, so progress rows are self-describing without needing
@@ -153,9 +155,9 @@ src/
 ### Step engine
 
 `MASTER_STEP_IDS` in `src/config/steps.js` defines the fixed step order.
-`task:1` / `task:2` placeholders are expanded at runtime in `Wizard.jsx`
-using the participant's `assignment` (from `/api/assignment`) into concrete
-step IDs like `task:1:730-h:gherkin`.
+`task:1:first`, `task:1:second`, `task:2:first`, and `task:2:second` placeholders
+are expanded at runtime in `Wizard.jsx` using the participant's `assignment`
+(from `/api/assignment`) into concrete step IDs like `task:1:730-h:gherkin`.
 
 On each render, `Wizard.jsx`:
 

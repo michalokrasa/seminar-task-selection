@@ -7,6 +7,7 @@ const AUTOSAVE_INTERVAL_MS = 30000;
 export default function TaskStep({
   pid,
   stepIndex,
+  taskSlot,
   taskSlug,
   modality,
   description,
@@ -52,7 +53,7 @@ export default function TaskStep({
 
   async function handleSubmit() {
     if (!draft.trim()) {
-      if (!confirm('Your prompt is empty. Continue anyway?')) return;
+      if (!confirm('Your specification is empty. Continue anyway?')) return;
     }
     const payload = { taskSlug, modality, prompt: draft };
     await handleSave();
@@ -63,11 +64,11 @@ export default function TaskStep({
 
   return (
     <div>
-      <h2 style={{ marginBottom: '0.4rem' }}>Task {stepIndex - 3}</h2>
+      <h2 style={{ marginBottom: '0.4rem' }}>Task {taskSlot}: {label}</h2>
       <p style={{ margin: '0 0 1.5rem', fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.5 }}>
-        Read the problem description below carefully, then write a prompt
+        Read the problem description below carefully, then write a specification
         that you would give to an LLM so that it can solve this problem for
-        you. Your prompt must be written in{' '}
+        you. Your specification must be written in{' '}
         <strong>{label.toLowerCase()}</strong> format.
       </p>
       <div className="task-layout">
@@ -82,7 +83,7 @@ export default function TaskStep({
                 setDraft(next);
                 setSaved(false);
               }}
-              placeholder={`Write your ${label.toLowerCase()} prompt here...`}
+              placeholder={`Write your ${label} specification here...`}
             />
           ) : (
             <textarea
@@ -92,7 +93,7 @@ export default function TaskStep({
                 setDraft(e.target.value);
                 setSaved(false);
               }}
-              placeholder={`Write your ${label.toLowerCase()} prompt here...`}
+              placeholder={`Write your ${label.toLowerCase()} specification here...`}
             />
           )}
         </div>
@@ -102,7 +103,7 @@ export default function TaskStep({
           {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save draft'}
         </button>
         <p className="hint" style={{ margin: 0 }}>
-          Autosave is on — your prompt is saved automatically every 30 seconds.
+          Autosave is on — your input is saved automatically every 30 seconds.
         </p>
         <button className="primary" onClick={handleSubmit}>
           Submit and continue →

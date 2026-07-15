@@ -1,13 +1,13 @@
-Subject: Invitation to participate in a study on writing prompts for LLMs
+Subject: Invitation to participate in a study on writing specification for LLMs
 
 Dear {{PARTICIPANT_NAME}},
 
-Thank you for agreeing to participate in this study on writing prompts for
-large language models (LLMs). The study should take approximately 30–45
+Thank you for agreeing to participate in this study on writing specification for
+large language models (LLMs). The study should take approximately 45–60
 minutes in total, divided into the steps below.
 
 **We recommend completing this study on a laptop or desktop computer with a
-full-size screen** (not a phone or tablet) — the task material and prompt
+full-size screen** (not a phone or tablet) — the task material and specification
 editor are much easier to navigate with more screen space.
 
 ## Step 1 — Consent form
@@ -29,17 +29,17 @@ Please answer a few brief background questions:
 
 Once you have completed both forms above, please start the study itself using
 your personal link below. Your progress is saved automatically as you go
-(including an autosave every 30 seconds while you are writing a prompt), so
+(including an autosave every 30 seconds while you are writing a specification), so
 you can safely close the tab and return later if needed — you will resume
 exactly where you left off.
 
 [Personal study link](https://gherkinllmstudy.netlify.app/PID_PLACEHOLDER)
 
-Once you finish both tasks in the study app, you will see a confirmation
+Once you finish all four tasks in the study app, you will see a confirmation
 screen. A short post-study survey will be sent to you separately.
 
 If you experience any issues or have questions, please reply to this email or
-contact me at michal.okrasa@unine.ch.
+contact me at michal.okrasa@unine.ch or Nitish at nitish.patkar@fhnw.ch.
 
 Thank you again for your participation.
 

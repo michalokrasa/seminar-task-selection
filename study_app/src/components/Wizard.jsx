@@ -37,24 +37,49 @@ export default function Wizard({ pid, assignment, loading, error }) {
   const [showReference, setShowReference] = useState(false);
   const startedStepIdsRef = useRef(new Set());
 
-  // Build concrete steps using the participant assignment.
+  // Build concrete steps using the participant assignment. Each assigned task
+  // is now completed in both modalities, producing four specification steps.
   const steps = React.useMemo(() => {
     if (!assignment) return [];
     return MASTER_STEP_IDS.map((id) => {
-      if (id === 'task:1') {
+      if (id === 'task:1:first') {
+        const mod = assignment.task_1_first_modality;
         return {
-          id: `task:1:${assignment.task_1_slug}:${assignment.task_1_modality}`,
+          id: `task:1:${assignment.task_1_slug}:${mod}`,
           kind: 'task',
           taskSlug: assignment.task_1_slug,
-          modality: assignment.task_1_modality,
+          modality: mod,
+          taskSlot: 1,
         };
       }
-      if (id === 'task:2') {
+      if (id === 'task:1:second') {
+        const mod = assignment.task_1_second_modality;
         return {
-          id: `task:2:${assignment.task_2_slug}:${assignment.task_2_modality}`,
+          id: `task:1:${assignment.task_1_slug}:${mod}`,
+          kind: 'task',
+          taskSlug: assignment.task_1_slug,
+          modality: mod,
+          taskSlot: 1,
+        };
+      }
+      if (id === 'task:2:first') {
+        const mod = assignment.task_2_first_modality;
+        return {
+          id: `task:2:${assignment.task_2_slug}:${mod}`,
           kind: 'task',
           taskSlug: assignment.task_2_slug,
-          modality: assignment.task_2_modality,
+          modality: mod,
+          taskSlot: 2,
+        };
+      }
+      if (id === 'task:2:second') {
+        const mod = assignment.task_2_second_modality;
+        return {
+          id: `task:2:${assignment.task_2_slug}:${mod}`,
+          kind: 'task',
+          taskSlug: assignment.task_2_slug,
+          modality: mod,
+          taskSlot: 2,
         };
       }
       return { id, kind: 'static' };
@@ -80,10 +105,22 @@ export default function Wizard({ pid, assignment, loading, error }) {
     setViewIndex((v) => Math.min(Math.max(v, 0), frontierIndex));
   }, [frontierIndex]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [viewIndex]);
+
   const isDone = React.useMemo(
     () => steps.length > 0 && completedStepIds.includes(steps[steps.length - 1].id),
     [completedStepIds, steps]
   );
+
+  const completedSet = React.useMemo(() => {
+    const indices = new Set();
+    steps.forEach((s, i) => {
+      if (completedStepIds.includes(s.id)) indices.add(i);
+    });
+    return indices;
+  }, [completedStepIds, steps]);
 
   useEffect(() => {
     if (!pid) return;
@@ -156,7 +193,6 @@ export default function Wizard({ pid, assignment, loading, error }) {
   if (!assignment) return <div className="error">No assignment found for participant ID.</div>;
 
   const current = steps[viewIndex];
-  const completedSet = new Set(completedStepIds);
   const canShowReference = current?.kind === 'task';
 
   if (isDone) {
@@ -209,6 +245,7 @@ function StepContent({ pid, step, stepIndex, draft, onComplete, onSaveDraft }) {
         key={step.id}
         pid={pid}
         stepIndex={stepIndex}
+        taskSlot={step.taskSlot}
         taskSlug={step.taskSlug}
         modality={step.modality}
         description={getTaskDescription(step.taskSlug)}

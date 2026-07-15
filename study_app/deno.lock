@@ -11,7 +11,19 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@codemirror/commands@^6.6.0",
+        "npm:@codemirror/language@^6.12.4",
+        "npm:@codemirror/state@^6.7.1",
+        "npm:@codemirror/view@^6.43.6",
+        "npm:@lezer/highlight@^1.2.3",
         "npm:@vitejs/plugin-react@^4.3.1",
+        "npm:codemirror@^6.0.2",
+        "npm:googleapis@140",
+        "npm:highlight.js@^11.9.0",
+        "npm:katex@0.17",
+        "npm:marked-highlight@^2.1.4",
+        "npm:marked-katex-extension@^5.1.10",
+        "npm:marked@^13.0.2",
         "npm:react-dom@^18.3.1",
         "npm:react@^18.3.1",
         "npm:vite@^5.3.3"

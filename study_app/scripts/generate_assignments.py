@@ -3,12 +3,18 @@
 
 Reads the approved problem pool from ../apps_selected_approved/ and assigns
 each participant:
-  - two distinct tasks (out of the 5 study artifacts)
-  - a counterbalanced modality order (nl -> gherkin or gherkin -> nl)
+  - two distinct tasks (out of the approved pool)
+  - a counterbalanced first modality order (nl -> gherkin or gherkin -> nl)
   - a deterministic Latin-square-ish condition group
 
+The frontend expands each assigned task into both modalities, so every
+participant writes four specifications in total: Gherkin + natural-language
+for each of the two assigned tasks.
+
 Output: stdout CSV with columns:
-  participant_id,task_1_slug,task_1_modality,task_2_slug,task_2_modality,condition_group
+  participant_id,task_1_slug,task_1_first_modality,task_1_second_modality,
+  task_2_slug,task_2_first_modality,task_2_second_modality,
+  condition_group,task_1_bucket,task_2_bucket
 
 Upload the CSV to the Google Sheet tab named `assignments`.
 """
@@ -63,16 +69,16 @@ def build_round_matching(task_pool, round_index):
 def generate_assignments(task_pool, participant_ids):
     """Create a counterbalanced assignment for each participant ID.
 
-    Two balance guarantees:
+    Balance guarantee:
       - Task usage: participants are grouped into rounds of
         `len(task_pool) // 2` (e.g. 6 participants per round for a
         12-task pool). Within a round, tasks are paired via a perfect
         matching, so every task is used EXACTLY ONCE per round — no task
         repeats until every other task has also been used once.
-      - Modality order: the nl-first / gherkin-first split is exactly
-        n//2 vs n - n//2 (off by at most one for odd N), decoupled from
-        task-pair order so it isn't confounded with which pair a
-        participant gets.
+
+    Each assigned task is completed in both modalities. The order of the two
+    modalities for each task is randomized per participant, so across the
+    study both NL-first and Gherkin-first orders are evenly represented.
     """
     n = len(participant_ids)
     pairs_per_round = len(task_pool) // 2
@@ -80,8 +86,11 @@ def generate_assignments(task_pool, participant_ids):
         raise ValueError("Task pool must contain at least 2 tasks.")
 
     rng = random.Random(SEED)
-    modality_orders = [("nl", "gherkin")] * (n // 2) + [("gherkin", "nl")] * (n - n // 2)
-    rng.shuffle(modality_orders)
+
+    def shuffled_modalities():
+        pair = ["nl", "gherkin"]
+        rng.shuffle(pair)
+        return pair
 
     rows = []
     current_round = -1
@@ -94,15 +103,18 @@ def generate_assignments(task_pool, participant_ids):
             current_round = round_index
 
         (slug1, bucket1), (slug2, bucket2) = round_pairs[pos]
-        mod1, mod2 = modality_orders[i]
-        group = f"round{round_index}_pair{pos}_{'nl_first' if mod1 == 'nl' else 'gherkin_first'}"
+        task_1_modalities = shuffled_modalities()
+        task_2_modalities = shuffled_modalities()
+        group = f"round{round_index}_pair{pos}_t1-{task_1_modalities[0]}_t2-{task_2_modalities[0]}"
         rows.append(
             {
                 "participant_id": pid,
                 "task_1_slug": slug1,
-                "task_1_modality": mod1,
+                "task_1_first_modality": task_1_modalities[0],
+                "task_1_second_modality": task_1_modalities[1],
                 "task_2_slug": slug2,
-                "task_2_modality": mod2,
+                "task_2_first_modality": task_2_modalities[0],
+                "task_2_second_modality": task_2_modalities[1],
                 "condition_group": group,
                 "task_1_bucket": bucket1,
                 "task_2_bucket": bucket2,
@@ -139,9 +151,11 @@ def main():
         fieldnames=[
             "participant_id",
             "task_1_slug",
-            "task_1_modality",
+            "task_1_first_modality",
+            "task_1_second_modality",
             "task_2_slug",
-            "task_2_modality",
+            "task_2_first_modality",
+            "task_2_second_modality",
             "condition_group",
             "task_1_bucket",
             "task_2_bucket",
